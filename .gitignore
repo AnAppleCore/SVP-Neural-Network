@@ -1,7 +1,10 @@
 build/
 dist/
 models/__pycache__/
-models/weights/alexnet
-models/weights/densenet121
-models/weights/vgg19_bn
+models/weights/
 utils/__pycache__/
+svpnn/__pycache__/
+results/vgg19_bn/
+results/alexnet/
+results/densenet121/
+ori_model.sh

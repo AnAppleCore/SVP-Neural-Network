@@ -95,7 +95,7 @@ def train(args = None):
         model = get_svpnn()
     
     if args.ngpus > 0 :
-        print('We have {} GPU(s) detected'.format(str(torch.cuda.device_count())))
+        print('We have {} GPU(s) detected: {}'.format(str(torch.cuda.device_count()), os.environ['CUDA_VISIBLE_DEVICES']))
         model = model.to(device)
     else:
         print('Caution!!! We run on CPU!')
@@ -135,8 +135,8 @@ def train(args = None):
     save_model_steps = (np.arange(0, args.epochs+1, save_model_epochs)*nsteps).astype(int)
 
     ## iteration
-    for epoch in tqdm.trange(start_epoch, arge.epochs+1, initial=0, desc='epoch'):
-        print('----- Epoch: {} -----'.format(epoch))
+    for epoch in tqdm.trange(start_epoch, args.epochs+1, initial=0, desc='epoch'):
+        print('\n----- Epoch: {} -----'.format(epoch))
         data_load_start = np.nan
         data_loader_iter = trainer.data_loader
 

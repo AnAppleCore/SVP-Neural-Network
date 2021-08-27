@@ -2,9 +2,9 @@ import os
 import torch
 import torch.nn as nn
 
-from .alexnet import AlexNet
-from .vgg19_bn import VGG19_BN
-from .densenet121 import DenseNet121
+from .alexnet import AlexNet, AlexNetBackEnd
+from .vgg19_bn import VGG19_BN, VGGBackEnd
+from .densenet121 import DenseNet121, DenseNetBackEnd
 
 
 AVAILABLE_MODEL = {'densenet121', 'alexnet', 'vgg19_bn'}
@@ -49,3 +49,25 @@ def model_test(model_arch = 'densenet121'):
     y = model(x).to('cpu')
     x = x.to('cpu')
     print(x.shape, y.shape)
+
+
+def get_backend(model_arch = 'densenet121'):
+    """
+        Return the backends.
+        @param:
+            'model_arch': {'densenet121', 'alexnet', 'vgg19_bn'}
+    """
+
+    assert model_arch in AVAILABLE_MODEL, 'Model Unsupported!'
+
+    if model_arch == 'densenet121':
+        backend = DenseNetBackEnd()
+        print('Model: ', 'DenseNet121')
+    elif model_arch == 'alexnet':
+        backend = AlexNetBackEnd()
+        print('Model: ', 'AlexNet')
+    elif model_arch == 'vgg19_bn':
+        backend = VGGBackEnd()
+        print('Model: ', 'VGG19-BN')
+
+    return backend

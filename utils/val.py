@@ -73,6 +73,8 @@ def accuracy(output, target, topk=(1,)):
 def val(args = None):
 
     # initialization
+    torch.manual_seed(args.torch_seed)
+    torch.backends.cudnn.benchmark = True
     if args.ngpus > 0 and torch.cuda.is_available():
         device = torch.device('cuda')
     else:
@@ -87,7 +89,7 @@ def val(args = None):
         model = get_svpnn()
     
     if args.ngpus > 0 :
-        print('We have {} GPU(s) detected'.format(str(torch.cuda.device_count())))
+        print('We have {} GPU(s) detected: {}'.format(str(torch.cuda.device_count()), os.environ['CUDA_VISIBLE_DEVICES']))
         model = model.to(device)
     else:
         print('Caution!!! We run on CPU!')

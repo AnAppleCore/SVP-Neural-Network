@@ -63,7 +63,7 @@ def set_gpus(n=4):
         gpus = subprocess.run(shlex.split(
             'nvidia-smi --query-gpu=index,memory.free,memory.total --format=csv,nounits'), check=True, stdout=subprocess.PIPE).stdout
         gpus = pd.read_csv(io.BytesIO(gpus), sep=', ', engine='python')
-        gpus = gpus[gpus['memory.total [MiB]'] > 8000]  # only above 8 GB
+        gpus = gpus[gpus['memory.total [MiB]'] > 4096]  # only above 4 GB
         if os.environ.get('CUDA_VISIBLE_DEVICES') is not None:
             visible = [int(i) for i in os.environ['CUDA_VISIBLE_DEVICES'].split(',')]
             gpus = gpus[gpus['index'].isin(visible)]
