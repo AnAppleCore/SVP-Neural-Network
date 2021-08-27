@@ -1,4 +1,7 @@
 build/
 dist/
 models/__pycache__/
-models/weights/
+models/weights/alexnet
+models/weights/densenet121
+models/weights/vgg19_bn
+utils/__pycache__/
