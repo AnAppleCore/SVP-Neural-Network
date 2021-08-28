@@ -1,18 +1,21 @@
+import numpy as np
+import os, tqdm, time
+
 import torch
 import torch.nn as nn
 import torchvision
 
-import os, tqdm, time
-
-from models import get_ori_model
+from PIL import Image
+from imagecorruptions import corrupt
 from svpnn import get_svpnn
+from models import get_ori_model
 
-# Global parameters
+# Global parameters, because of image corruption, abandon ImageNet value
 norm_mean = [0.5, 0.5, 0.5]
 norm_std = [0.5, 0.5, 0.5]
 
 
-class ImageNetVal(object):
+class ImageNetRobustnessVal(object):
 
     def __init__(self, model, device, args):
         self.name = 'val'
@@ -27,6 +30,7 @@ class ImageNetVal(object):
         dataset = torchvision.datasets.ImageFolder(
             os.path.join(self.args.in_path, 'val'),
             torchvision.transforms.Compose([
+                self.image_corruption,
                 torchvision.transforms.Resize(256),
                 torchvision.transforms.CenterCrop(224),
                 torchvision.transforms.ToTensor(),
@@ -39,6 +43,12 @@ class ImageNetVal(object):
                                                   pin_memory=True)
 
         return data_loader
+
+    def image_corruption(self, img):
+        img = np.asarray(img)
+        corrupted = corrupt(img, corruption_name=self.args.corruption_name, severity=self.args.severity)
+        corrupted = Image.fromarray(corrupted)
+        return corrupted
 
     def __call__(self):
         self.model.eval()
@@ -70,9 +80,9 @@ def accuracy(output, target, topk=(1,)):
         return res
 
 
-def val(args = None):
+def robustness_val(args = None):
 
-    print('ImageNet Validation')
+    print('ImageNet Robustness Validation')
 
     # initialization
     torch.manual_seed(args.torch_seed)
@@ -97,7 +107,7 @@ def val(args = None):
         #FIXME: problem here? why use ".module"?
         model = model.module
 
-    validator = ImageNetVal(model, device, args)
+    validator = ImageNetRobustnessVal(model, device, args)
 
     if not args.restore_path or not args.restore_epoch:
         print('Both weight path and epoch number are required!')
@@ -110,7 +120,7 @@ def val(args = None):
 
     record = validator()
 
-    print('Validation Finished!')
+    print('Robustness Validation Finished!')
     print('Top1: ', record['top1'])
     print('Top5: ', record['top5'])
     return None

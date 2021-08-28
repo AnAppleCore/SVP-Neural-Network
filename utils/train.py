@@ -78,6 +78,8 @@ class ImageNetTrain(object):
 
 def train(args = None):
 
+    print('ImageNet Training')
+
     # initialization
     torch.manual_seed(args.torch_seed)
     torch.backends.cudnn.benchmark = True
@@ -94,7 +96,7 @@ def train(args = None):
         model = get_svpnn(model_arch = args.model_arch)
     
     if args.ngpus > 0 :
-        print('We have {} GPU(s) detected: {}'.format(str(torch.cuda.device_count()), os.environ['CUDA_VISIBLE_DEVICES']))
+        print('We have {} GPU(s) detected: {}'.format(str(len(os.environ['CUDA_VISIBLE_DEVICES'])), os.environ['CUDA_VISIBLE_DEVICES']))
         model = model.to(device)
     else:
         print('Caution!!! We run on CPU!')
@@ -134,12 +136,12 @@ def train(args = None):
     save_model_steps = (np.arange(0, args.epochs+1, save_model_epochs)*nsteps).astype(int)
 
     ## iteration
-    for epoch in tqdm.trange(start_epoch, args.epochs+1, initial=0, desc='epoch'):
+    for epoch in tqdm.trange(start_epoch, args.epochs+1, initial=0, desc='epoch', ncols=80):
         print('\n----- Epoch: {} -----'.format(epoch))
         data_load_start = np.nan
         data_loader_iter = trainer.data_loader
 
-        for step, data in enumerate(tqdm.tqdm(data_loader_iter, desc=trainer.name)):
+        for step, data in enumerate(tqdm.tqdm(data_loader_iter, desc=trainer.name, ncols=80)):
             data_load_time = time.time() - data_load_start
             global_step = epoch * nsteps + step
 

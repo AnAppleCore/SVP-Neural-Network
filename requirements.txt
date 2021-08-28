@@ -1,0 +1,6 @@
+scipy
+pandas
+tqdm
+torchvision
+requests
+imagecorruptions

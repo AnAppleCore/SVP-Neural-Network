@@ -6,4 +6,5 @@ results/vgg19_bn/
 results/alexnet/
 results/densenet121/
 execute.sh
-**/__pycache__/
+*__pycache__*
+*.pyc

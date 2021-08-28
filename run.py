@@ -1,12 +1,12 @@
 ### Main Script to Run SVPNN
 
-import tqdm
 import numpy as np
 import pandas as pd
 import os, argparse, subprocess, io, shlex
 
 from utils.val import val
 from utils.train import train
+from utils.robustness_val import robustness_val
 
 
 parser = argparse.ArgumentParser(description='Semi-bionic Visual Pathway Neural Network')
@@ -22,8 +22,8 @@ parser.add_argument('-rpath', '--restore_path', default=None, type=str,
                     help='path of folder containing specific epoch file for restoring model')
 
 # Execution parameters
-parser.add_argument('-m', '--mode', choices=['train', 'val'], default='val',
-                    help='switch to train or validate mode')
+parser.add_argument('-m', '--mode', choices=['train', 'val', 'rval'], default='val',
+                    help='switch to train or validate mode, rval for robustness validation')
 parser.add_argument('-g','--ngpus', default=4, type=int,
                     help='number of GPUs to use; 0 for running on CPU')
 parser.add_argument('-j', '--workers', default=20, type=int,
@@ -37,7 +37,7 @@ parser.add_argument('-n', '--no_svp', default=False, action='store_true',
 parser.add_argument('-a', '--model_arch', choices=['alexnet', 'vgg19_bn', 'densenet121'], default='densenet121',
                     help='model architecture to run')
 
-# Training and  parameters
+# Training parameters
 parser.add_argument('--optimizer', choices=['stepLR', 'plateauLR'], default='stepLR',
                     help='Optimizer')
 parser.add_argument('--lr', '--learning_rate', default=.1, type=float,
@@ -51,6 +51,13 @@ parser.add_argument('--weight_decay', default=1e-4, type=float,
                     help='weight decay ')
 parser.add_argument('--torch_seed', default=0, type=int,
                     help='seed for randomness')
+
+# Robustness validation parameters
+parser.add_argument('-c', '--corruption_name', choices=['speckle_noise', 'gaussian_blur', 'spatter', 'saturate'], default='gaussian_blur',
+                    help='choose the corruption to test robustness')
+parser.add_argument('-s', '--severity', default=1, type=int,
+                    help='strength with which to corrupt the image; an integer in [1, 5]')
+
 
 ARGS = parser.parse_args()
 
@@ -78,7 +85,7 @@ def set_gpus(n=4):
 
 def main(args = None):
 
-    assert args.mode in {'train', 'val'}
+    assert args.mode in {'train', 'val', 'rval'}
 
     if args.ngpus > 0:
         set_gpus(args.ngpus)
@@ -87,6 +94,8 @@ def main(args = None):
         train(args)
     elif args.mode == 'val':
         val(args)
+    elif args.mode == 'rval':
+        robustness_val(args)
 
     return None
 
