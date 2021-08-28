@@ -96,6 +96,16 @@ def val(args = None):
         model = model.module
 
     validator = ImageNetVal(model, device, args)
+
+    if not args.restore_path or not args.repoch:
+        print('Both weight path and epoch number are required!')
+        return
+    else:
+        print('Restoring epoch {e} from {p}'.format(e=str(args.restore_epoch), p=args.restore_path))
+        weights_path = os.path.join(args.restore_path, '{m}_epoch_{e:02d}.pth.tar'.format(m=args.model_arch, e=args.restore_epoch))
+        ckpt_data = torch.load(weights_path)
+        model.load_state_dict(ckpt_data['state_dict'])
+
     record = validator()
 
     print('Validation Finished!')

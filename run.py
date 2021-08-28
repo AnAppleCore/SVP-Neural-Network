@@ -17,9 +17,9 @@ parser.add_argument('-i', '--in_path', required=True,
 parser.add_argument('-o', '--output_path', default='./results/',
                     help='path for storing results')
 parser.add_argument('-repoch', '--restore_epoch', default=0, type=int,
-                    help='epoch number for restoring model training')
+                    help='epoch number for restoring model')
 parser.add_argument('-rpath', '--restore_path', default=None, type=str,
-                    help='path of folder containing specific epoch file for restoring model training')
+                    help='path of folder containing specific epoch file for restoring model')
 
 # Execution parameters
 parser.add_argument('-m', '--mode', choices=['train', 'val'], default='val',

@@ -5,5 +5,5 @@ svpnn/vtwoblock/alexnet-owt-7be5be79.pth
 results/vgg19_bn/
 results/alexnet/
 results/densenet121/
-ori_model.sh
+execute.sh
 **/__pycache__/
