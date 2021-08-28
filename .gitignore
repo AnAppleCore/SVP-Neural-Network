@@ -1,13 +1,9 @@
 build/
 dist/
-models/__pycache__/
 models/weights/
-utils/__pycache__/
-svpnn/__pycache__/
-svpnn/voneblock/__pycache__/
-svpnn/vtwoblock/__pycache__/
 svpnn/vtwoblock/alexnet-owt-7be5be79.pth
 results/vgg19_bn/
 results/alexnet/
 results/densenet121/
 ori_model.sh
+**/__pycache__/
