@@ -49,17 +49,3 @@ class VTwoBlock(nn.Module):
         y = F.conv2d(x, weight=self.weight, bias=self.bias, padding=2)
         y = self.vtwo(y)
         return self.bottleneck(y)
-
-
-def test():
-    vtwo = VTwoBlock()
-    for idx, p in enumerate(vtwo.parameters()):
-        print(idx, '->', type(p), p.size(), p.requires_grad)
-    if torch.cuda.is_available():
-        device = torch.device('cuda')
-    else:
-        device = torch.device('cpu')
-    vtwo.to(device)
-    x = torch.randn(4, 64, 128, 128).to(device)
-    y = vtwo(x)
-    print(y.shape)

@@ -85,8 +85,7 @@ def val(args = None):
         model = get_ori_model(model_arch=args.model_arch)
     else:
         print('Running SVPNN with {m} backend'.format(m=args.model_arch))
-        #TODO: finish svpnn
-        model = get_svpnn()
+        model = get_svpnn(model_arch = args.model_arch)
     
     if args.ngpus > 0 :
         print('We have {} GPU(s) detected: {}'.format(str(torch.cuda.device_count()), os.environ['CUDA_VISIBLE_DEVICES']))
