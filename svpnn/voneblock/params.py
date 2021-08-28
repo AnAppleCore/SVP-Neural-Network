@@ -1,6 +1,6 @@
 
 import numpy as np
-from utils import sample_dist
+from .utils import sample_dist
 import scipy.stats as stats
 
 np.seterr(divide='ignore',invalid='ignore') # ignore the invalid value in true_divide

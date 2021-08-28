@@ -1,15 +1,36 @@
 import os
+import requests
+from collections import OrderedDict
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from collections import OrderedDict
+
+
+vtwo_dir = os.path.dirname(os.path.abspath(__file__))
+weight_path = os.path.join(vtwo_dir, 'vtwoweight.pth')
+if not os.path.exists(weight_path):
+    weights_path =os.path.join(vtwo_dir, 'alexnet-owt-7be5be79.pth')
+    if not os.path.exists(weights_path):
+        print('Downloading pretrained alexnet weight...')
+        url = 'https://download.pytorch.org/models/alexnet-owt-7be5be79.pth'
+        r = requests.get(url)
+        with open(weights_path, 'wb') as weight:
+            weight.write(r.content)
+    ckpt_data = OrderedDict()
+    alex_data = torch.load(weights_path)
+    ckpt_data['weight'] = alex_data['features.3.weight']
+    ckpt_data['bias'] = alex_data['features.3.bias']
+    torch.save(alex_data, save_path)
+else:
+    ckpt_data = torch.load(weight_path)
 
 
 # The second layer of AlexNet, but with pre-trained weights
 
 class VTwoBlock(nn.Module):
 
-    def __init__(self, weight_path, out_channels = 128):
+    def __init__(self, out_channels = 128):
         super(VTwoBlock, self).__init__()
         self.vtwo = nn.Sequential(
             # nn.Conv2d(64, 192, kernel_size=5, padding=2),
@@ -19,7 +40,6 @@ class VTwoBlock(nn.Module):
         self.bottleneck = bottleneck = nn.Conv2d(192, out_channels, kernel_size=1, stride=1, bias=False)
         nn.init.kaiming_normal_(bottleneck.weight, mode='fan_out', nonlinearity='relu')
 
-        ckpt_data = torch.load(weight_path)
         self.weight = ckpt_data['weight']
         self.bias = ckpt_data['bias']
         self.weight.requires_grad_(False)
@@ -31,19 +51,8 @@ class VTwoBlock(nn.Module):
         return self.bottleneck(y)
 
 
-def extract_v2_weight(save_path = 'vtwoweight.pth'):
-    vtwo = OrderedDict()
-    #TODO: download the online model here
-    weights_path = os.path.join('.', 'alexnet-owt-7be5be79.pth')
-    ckpt_data = torch.load(weights_path)
-    vtwo['weight'] = ckpt_data['features.3.weight']
-    vtwo['bias'] = ckpt_data['features.3.bias']
-    torch.save(vtwo, 'vtwoweight.pth')
-    return None
-
-
 def test():
-    vtwo = VTwoBlock('vtwoweight.pth')
+    vtwo = VTwoBlock()
     for idx, p in enumerate(vtwo.parameters()):
         print(idx, '->', type(p), p.size(), p.requires_grad)
     if torch.cuda.is_available():
@@ -54,8 +63,3 @@ def test():
     x = torch.randn(4, 64, 128, 128).to(device)
     y = vtwo(x)
     print(y.shape)
-
-
-if __name__ == '__main__':
-    # extract_v2_weight(save_path = 'vtwoweight.pth')
-    test()

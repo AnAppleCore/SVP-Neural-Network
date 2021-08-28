@@ -62,12 +62,12 @@ def get_backend(model_arch = 'densenet121'):
 
     if model_arch == 'densenet121':
         backend = DenseNetBackEnd()
-        print('Model: ', 'DenseNet121')
+        print('Backend model: ', 'DenseNet121')
     elif model_arch == 'alexnet':
         backend = AlexNetBackEnd()
-        print('Model: ', 'AlexNet')
+        print('Backend model: ', 'AlexNet')
     elif model_arch == 'vgg19_bn':
         backend = VGGBackEnd()
-        print('Model: ', 'VGG19-BN')
+        print('Backend model: ', 'VGG19-BN')
 
     return backend

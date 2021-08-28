@@ -1,15 +1,16 @@
 
 import torch
-from vtwoblock import VTwoBlock
+from .vtwoblock import VTwoBlock
 
-def get_vtwoblock(model_arch = 'densenet', weight_path = 'vtwoweight.pth'):
+def get_vtwoblock(model_arch = 'densenet'):
 
     if model_arch == 'alexnet':
         out_channels = 192
     else:
         out_channels = 128
 
-    vtwoblock = VTwoBlock(weight_path, out_channels)
+    vtwoblock = VTwoBlock(out_channels)
+    print('V2: AlexNet pre-trained layer 2')
 
     return vtwoblock
 
@@ -24,7 +25,3 @@ def vtwo_test():
     x = torch.randn(4, 64, 56, 56).to(device)
     y = vtwo(x)
     print(y.shape)
-
-
-if __name__ == '__main__':
-    vtwo_test()
