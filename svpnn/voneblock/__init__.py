@@ -1,8 +1,9 @@
 
+import torch
 import numpy as np
 
-from .voneblock import VOneBlock
-from .params import generate_gabor_param
+from voneblock import VOneBlock
+from params import generate_gabor_param
 
 def get_voneblock(sf_corr=0.75, sf_max=9, sf_min=0, rand_param=False, gabor_seed=0,
             simple_channels=256, complex_channels=256,
@@ -33,3 +34,19 @@ def get_voneblock(sf_corr=0.75, sf_max=9, sf_min=0, rand_param=False, gabor_seed
                            ksize=ksize, stride=stride, input_size=image_size)
 
     return voneblock
+
+
+def vone_test():
+    vone = get_voneblock()
+    if torch.cuda.is_available():
+        device = torch.device('cuda')
+    else:
+        device = torch.device('cpu')
+    vone.to(device)
+    x = torch.randn(4, 3, 224, 224).to(device)
+    y = vone(x)
+    print(y.shape)
+
+
+if __name__ == '__main__':
+    vone_test()

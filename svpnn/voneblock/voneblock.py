@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from torch import nn
 from torch.nn import functional as F
-from .utils import gabor_kernel
+from utils import gabor_kernel
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
