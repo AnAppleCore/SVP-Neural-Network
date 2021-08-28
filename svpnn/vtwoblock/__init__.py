@@ -21,7 +21,7 @@ def vtwo_test():
     else:
         device = torch.device('cpu')
     vtwo.to(device)
-    x = torch.randn(4, 64, 128, 128).to(device)
+    x = torch.randn(4, 64, 56, 56).to(device)
     y = vtwo(x)
     print(y.shape)
 

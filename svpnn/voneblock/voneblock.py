@@ -73,6 +73,9 @@ class VOneBlock(nn.Module):
         self.noise = nn.ReLU(inplace=True)
         self.output = Identity()
 
+        self.bottleneck = nn.Conv2d(self.out_channels, 64, kernel_size=1, stride=1, bias=False)
+        nn.init.kaiming_normal_(self.bottleneck.weight, mode='fan_out', nonlinearity='relu')
+
     def forward(self, x):
         # Gabor activations [Batch, out_channels, H/stride, W/stride]
         x = self.gabors_f(x)
@@ -80,7 +83,7 @@ class VOneBlock(nn.Module):
         x = self.noise_f(x)
         # V1 Block output: (Batch, out_channels, H/stride, W/stride)
         x = self.output(x)
-        return x
+        return self.bottleneck(x)
 
     def gabors_f(self, x):
         s_q0 = self.simple_conv_q0(x)

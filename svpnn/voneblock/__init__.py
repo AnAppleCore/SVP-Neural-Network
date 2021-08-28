@@ -5,9 +5,9 @@ import numpy as np
 from voneblock import VOneBlock
 from params import generate_gabor_param
 
-def get_voneblock(sf_corr=0.75, sf_max=9, sf_min=0, rand_param=False, gabor_seed=0,
+def get_voneblock(sf_corr=0.75, sf_max=6, sf_min=0, rand_param=False, gabor_seed=0,
             simple_channels=256, complex_channels=256,
-            noise_mode=None, noise_scale=0.35, noise_level=0.07, k_exc=25, image_size=224, visual_degrees=8, ksize=25, stride=4):
+            noise_mode=None, noise_scale=1, noise_level=1, k_exc=25, image_size=224, visual_degrees=8, ksize=25, stride=4):
     
     out_channels = simple_channels + complex_channels
 
