@@ -16,6 +16,22 @@
 
 > NOTE: No Pretrained Model Available Now! Train before Validation please. 
 
+### Requirements:
+
+> Dependencies:
+
+    tqdm
+    scipy
+    pandas
+    requests
+    torch >= 1.6.0
+    torchvision
+    imagecorruptions
+
+> Type the following command to install dependencies:
+
+    $ pip install -r requirements.txt
+
 ### Train a model
 
 > The main script we use here is [`run.py`](./run.py). For example if you want to train SVPNN with DenseNet-121 back-end:
