@@ -90,7 +90,7 @@ class VGGBackEnd(nn.Module):
     def _make_layer(self):
         layers = []
         in_channels = 128
-        config = [128, 'M', 256, 256, 256, 256, 'M', 512, 512, 512, 512, 'M', 512, 512, 512, 512, 'M']
+        config = [256, 256, 256, 256, 'M', 512, 512, 512, 512, 'M', 512, 512, 512, 512, 'M']
         for v in config:
             if v == 'M':
                 layers += [nn.MaxPool2d(kernel_size=2, stride=2)]
