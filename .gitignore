@@ -6,5 +6,7 @@ results/vgg19_bn/
 results/alexnet/
 results/densenet121/
 execute.sh
+validate.sh
 *__pycache__*
 *.pyc
+script.py
