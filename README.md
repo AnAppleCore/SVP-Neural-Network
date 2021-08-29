@@ -8,7 +8,7 @@
 
 ![Human Two Visual Patheay](./1424_Visual_Streams.jpg)
 
-![SVPNN architecture](./SVPNN.pdf)
+![SVPNN architecture](./SVPNN.png)
 
 ------
 
@@ -26,7 +26,7 @@
 
     $ python run.py --in_path /path/to/dataset/ImageNet --output_path /path/to/store/results --mode train --mode_arch densenet121 -n
 
-## Validation
+### Validation
 
 > Validation is a little bit, but the restore epoch number and model weight path is required (there two parameters will also be used when you want to restore the training process), for example:
 
@@ -37,7 +37,7 @@
     $ python run.py -i /path/to/dataset/ImageNet -o ./results/densenet121 -repoch 30 -rpath ./results/densenet121 -m val -a densenet121
 
 
-## Experiment Parameters setting:
+### Experiment Parameters setting:
 
 > Here we provide the parameters to adjust the environment settings for both training and validating. Here we show a context where 4 GPUs are used, epoch number 70, batch size 256, 10 dataloading workers and restore checkpoint from epoch 50 in path `./results/densenet121`.
 
