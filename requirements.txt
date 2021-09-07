@@ -2,6 +2,6 @@ tqdm
 scipy
 pandas
 requests
-torch >= 1.6.0
+torch
 torchvision
 imagecorruptions
